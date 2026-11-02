@@ -24,10 +24,10 @@ MONO = "'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace"
 T = {
     "light": dict(paper="#FBF1DC", card="#FFF9EC", ink="#3B2A1A", sub="#7C6A50",
                   rule="#E4CFA9", orange="#C2551F", amber="#D98B2B", rust="#8C3B12",
-                  olive="#6E7B3F", mustard="#E3B23C", shade="#F0DFBD", empty="#EBD8B6"),
+                  olive="#6E7B3F", mustard="#E3B23C", shade="#F0DFBD", empty="#F7EBD2"),
     "dark": dict(paper="#181008", card="#221607", ink="#F4E5C8", sub="#BBA689",
                  rule="#48381F", orange="#E4813F", amber="#EBA84C", rust="#C05F31",
-                 olive="#9BA96B", mustard="#EFC65F", shade="#2C1D0E", empty="#33240F"),
+                 olive="#9BA96B", mustard="#EFC65F", shade="#2C1D0E", empty="#1B1106"),
 }
 
 LEAF = ("M0,-11 C1.5,-8.2 2.2,-7.2 3.2,-6.6 C4.6,-9 6,-9.4 7,-8.4 "
@@ -105,34 +105,38 @@ def header(mode):
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="24" fill="none" '
              f'stroke="{c["rule"]}" stroke-width="1.4"/>')
 
-    # branch, growing in from the right edge
-    b.append(f'<path d="M1202,66 C1110,84 1044,128 1006,192" fill="none" stroke="{c["ink"]}" '
-             f'stroke-width="7" stroke-linecap="round" opacity="0.92"/>')
-    b.append(f'<path d="M1094,100 C1080,84 1072,72 1066,58" fill="none" stroke="{c["ink"]}" '
-             f'stroke-width="4" stroke-linecap="round" opacity="0.9"/>')
-    b.append(f'<path d="M1046,140 C1030,132 1018,130 1004,131" fill="none" stroke="{c["ink"]}" '
+    # branch: trunk in from the right edge, one twig, tapering to a tip
+    b.append(f'<path d="M1216,40 C1136,70 1066,106 1010,146 C986,163 972,184 966,208" '
+             f'fill="none" stroke="{c["ink"]}" stroke-width="9" stroke-linecap="round"/>')
+    b.append(f'<path d="M1046,120 C1020,148 998,172 980,200" fill="none" stroke="{c["ink"]}" '
+             f'stroke-width="4" stroke-linecap="round" opacity="0.95"/>')
+    b.append(f'<path d="M1104,82 C1074,66 1048,58 1022,56" fill="none" stroke="{c["ink"]}" '
              f'stroke-width="3.4" stroke-linecap="round" opacity="0.9"/>')
 
-    # leaves on and around the branch
-    b.append(leaf(1150, 96, 1.5, 28, c["orange"], .98, vein=c["card"]))
-    b.append(leaf(1078, 128, 1.25, -34, c["amber"], .96, vein=c["card"]))
-    b.append(leaf(1002, 168, 1.35, 52, c["rust"], .95, vein=c["card"]))
-    b.append(leaf(1058, 52, 1.0, 8, c["olive"], .9, vein=c["card"]))
-    b.append(leaf(1120, 206, .95, -14, c["mustard"], .9))
-    b.append(leaf(962, 96, .8, 64, c["rust"], .75))
-    b.append(leaf(1176, 178, .7, -48, c["amber"], .7))
-    b.append(acorn(1092, 196, 1.05, c["mustard"], c["rust"], c["ink"]))
-    b.append(acorn(1016, 84, .8, c["amber"], c["rust"], c["ink"]))
+    # leaves sit on the branch, not around it
+    b.append(leaf(1128, 82, 1.35, 208, c["orange"], .98, vein=c["card"]))
+    b.append(leaf(1062, 122, 1.5, 150, c["amber"], .97, vein=c["card"]))
+    b.append(leaf(1016, 158, 1.2, 118, c["rust"], .96, vein=c["card"]))
+    b.append(leaf(962, 202, 1.0, 84, c["mustard"], .95))
+    b.append(leaf(1018, 54, 1.15, -22, c["olive"], .92, vein=c["card"]))
+    b.append(leaf(1088, 150, .8, 40, c["rust"], .8))
+    b.append(acorn(1032, 138, .95, c["mustard"], c["rust"], c["ink"]))
+
+    # two on the way down
+    b.append(leaf(922, 108, .8, -40, c["amber"], .55))
+    b.append(leaf(898, 186, .65, 25, c["rust"], .5))
+    # one come to rest at the end of the rule, tying both halves together
+    b.append(leaf(372, 176, 1.05, -22, c["orange"], .95, vein=c["card"]))
+    b.append(leaf(392, 196, .55, 30, c["rust"], .7))
 
     # type
     x = 92
-    b.append(text(x + 3, 146, "Kaleb Wright", 82, c["amber"], weight="bold", ls=-2, opacity=.30))
     b.append(text(x, 143, "Kaleb Wright", 82, c["ink"], weight="bold", ls=-2))
     b.append(f'<path d="M{x},178 C{x+80},174 {x+180},178 {x+268},176" fill="none" '
              f'stroke="{c["orange"]}" stroke-width="2.6" stroke-linecap="round"/>')
-    b.append(text(x, 216, "est. 2020", 13.5, c["ink"], font=MONO, ls=1.8, opacity=.75))
-    b.append(text(x + 104, 216, "·", 13.5, c["sub"], font=MONO))
-    b.append(text(x + 124, 216, "github.com/kkaleb-w", 13.5, c["sub"], font=MONO, ls=0.2))
+    b.append(text(x, 216, "est. 2020", 15, c["sub"], font=SERIF, style='font-style="italic"'))
+    b.append(text(x + 78, 216, "·", 15, c["sub"], font=SERIF))
+    b.append(text(x + 96, 216, "github.com/kkaleb-w", 15, c["sub"], font=SERIF, style='font-style="italic"'))
 
     return svg(W, H, "\n".join(b), "Kaleb Wright")
 
@@ -157,12 +161,12 @@ def data_card(mode):
 
     # calculate height
     grid_top = 142
-    row_h = 70
+    row_h = 76
     rows = 2
     grid_bottom = grid_top + rows * row_h
     loc_top = grid_bottom + 46
-    bars_top = loc_top + 128
-    H = int(bars_top + 4 * 42 + 52)
+    bars_top = loc_top + 142
+    H = int(bars_top + 4 * 42 + 44)
 
 
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="20" fill="{c["card"]}"/>')
@@ -186,16 +190,16 @@ def data_card(mode):
         y = grid_top + r * row_h
         b.append(text(x, y, label, 14, c["sub"], font=MONO, ls=1.2))
         b.append(text(x, y + 34, val, 34, c["ink"], weight="bold"))
-        b.append(text(x, y + 54, note, 12.5, c["sub"], opacity=.9))
+        b.append(text(x, y + 55, note, 12.5, c["sub"], opacity=.88))
 
     # lines of code
     b.append(f'<path d="M{P},{loc_top-8} C{P+200},{loc_top-14} {W-P-200},{loc_top-2} {W-P},{loc_top-10}" '
              f'fill="none" stroke="{c["rule"]}" stroke-width="1.4"/>')
     b.append(text(P, loc_top + 26, "lines of code", 17, c["sub"], weight="bold", ls=2.6))
     b.append(text(P, loc_top + 84, fmt(D["loc"]), 54, c["orange"], weight="bold", ls=-1))
-    b.append(text(W - P, loc_top + 78, f'{D["loc_files"]} source files', 13.5, c["sub"],
+    b.append(text(W - P, loc_top + 70, f'{D["loc_files"]} source files', 13.5, c["sub"],
                   font=MONO, anchor="end"))
-    b.append(text(W - P, loc_top + 98, f'across {len([k for k, v in D["loc_per_repo"].items() if v])} repositories',
+    b.append(text(W - P, loc_top + 92, f'across {len([k for k, v in D["loc_per_repo"].items() if v])} repositories',
                   13.5, c["sub"], font=MONO, anchor="end"))
 
     # rhythm bars
@@ -207,7 +211,7 @@ def data_card(mode):
         ("night", "22–4", sum(hours[22:24]) + sum(hours[0:5])),
     ]
     total = max(1, sum(v for _, _, v in buckets))
-    b.append(text(P, bars_top - 16, "when i commit", 17, c["sub"], weight="bold", ls=2.6))
+    b.append(text(P, bars_top - 24, "when i commit", 17, c["sub"], weight="bold", ls=2.6))
 
     bar_x = P + 132
     bar_w = W - P - bar_x - 78
@@ -254,7 +258,7 @@ def activity(mode):
              f'stroke="{c["rule"]}" stroke-width="1.3"/>')
 
     b.append(text(P, 47, "the year in commits", 17, c["sub"], weight="bold", ls=2.6))
-    b.append(text(W - P, 46, f'{fmt(D["contributions_12mo"])} contributions', 13, c["sub"],
+    b.append(text(W - P, 47, f'{fmt(D["contributions_12mo"])} contributions', 13, c["sub"],
                   font=MONO, anchor="end"))
 
     scale = [c["empty"], "#E4BC7E" if mode == "light" else "#6B4A24",
@@ -270,7 +274,8 @@ def activity(mode):
         x = P + col * (cell + gap)
         y = top + row * (cell + gap)
         b.append(f'<rect x="{x}" y="{y}" width="{cell}" height="{cell}" rx="2.5" '
-                 f'fill="{scale[bucket(counts[date])]}"/>')
+                 f'fill="{scale[bucket(counts[date])]}" stroke="{c["rule"]}" '
+                 f'stroke-width="0.6" stroke-opacity="0.55"/>')
 
     # legend
     ly = top + 7 * (cell + gap) + 18
@@ -319,7 +324,7 @@ def lang_card(mode):
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="20" fill="none" '
              f'stroke="{c["rule"]}" stroke-width="1.3"/>')
     b.append(text(P, 47, "where the code is", 17, c["sub"], weight="bold", ls=2.6))
-    b.append(text(W - P, 46, "by bytes, public repos", 13, c["sub"], font=MONO, anchor="end"))
+    b.append(text(W - P, 46, "share of lines written", 13, c["sub"], font=MONO, anchor="end"))
 
     cols = [c["orange"], c["amber"], c["olive"], c["rust"], c["mustard"], c["sub"]]
     bar_x = P + 150
