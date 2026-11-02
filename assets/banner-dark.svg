@@ -1,18 +1,19 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="336" height="242" viewBox="0 0 336 242" role="img" aria-label="Kaleb — engineer, AI research">
-<style>text{font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;font-size:13.0px;white-space:pre;letter-spacing:0.6px}</style>
-<defs><filter id="g" x="-15%" y="-30%" width="130%" height="160%"><feGaussianBlur stdDeviation="2.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="383" height="262" viewBox="0 0 383 262" role="img" aria-label="Kaleb — engineer / ai research">
+<style>text{font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;white-space:pre;letter-spacing:0.55px}</style>
+<defs><filter id="g" x="-15%" y="-30%" width="130%" height="160%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <g filter="url(#g)">
-<text x="16" y="29.6" fill="#1d4b33" font-weight="normal">+-------------------------------------+</text>
-<text x="16" y="49.1" fill="#1d4b33" font-weight="normal">|                                     |</text>
-<text x="16" y="68.6" fill="#39d353" font-weight="bold">|  #   #  ###  #     ##### ####       |</text>
-<text x="16" y="88.1" fill="#39d353" font-weight="bold">|  #  #  #   # #     #     #   #      |</text>
-<text x="16" y="107.6" fill="#39d353" font-weight="bold">|  ###   ##### #     ####  ####       |</text>
-<text x="16" y="127.1" fill="#39d353" font-weight="bold">|  #  #  #   # #     #     #   #      |</text>
-<text x="16" y="146.6" fill="#39d353" font-weight="bold">|  #   # #   # ##### ##### ####       |</text>
-<text x="16" y="166.1" fill="#1d4b33" font-weight="normal">|                                     |</text>
-<text x="16" y="185.6" fill="#1d4b33" font-weight="normal">+-------------------------------------+</text>
-<text x="16" y="205.1" fill="#2f8a56" font-weight="normal">|  engineer / ai research             |</text>
-<text x="16" y="224.6" fill="#1d4b33" font-weight="normal">+-------------------------------------+</text>
-<rect x="211.0" y="193.4" width="8.2" height="14.3" fill="#39d353"><animate attributeName="opacity" values="1;1;0;0;1" dur="1.5s" repeatCount="indefinite"/></rect>
+<text x="16" y="29.6" font-size="13.0" fill="#1f5236" font-weight="normal">+-------------------------------------------+</text>
+<text x="16" y="49.1" font-size="13.0" fill="#1f5236" font-weight="normal">|                                           |</text>
+<text x="16" y="68.6" font-size="13.0" fill="#39d353" font-weight="bold">|     #   #   ###   #      #####  ####      |</text>
+<text x="16" y="88.1" font-size="13.0" fill="#39d353" font-weight="bold">|     #  #   #   #  #      #      #   #     |</text>
+<text x="16" y="107.6" font-size="13.0" fill="#39d353" font-weight="bold">|     ###    #####  #      ####   ####      |</text>
+<text x="16" y="127.1" font-size="13.0" fill="#39d353" font-weight="bold">|     #  #   #   #  #      #      #   #     |</text>
+<text x="16" y="146.6" font-size="13.0" fill="#39d353" font-weight="bold">|     #   #  #   #  #####  #####  ####      |</text>
+<text x="16" y="166.1" font-size="13.0" fill="#1f5236" font-weight="normal">|                                           |</text>
+<text x="16" y="185.6" font-size="13.0" fill="#1f5236" font-weight="normal">+-------------------------------------------+</text>
+<text x="16" y="205.1" font-size="13.0" fill="#1f5236" font-weight="normal">+-------------------------------------------+</text>
+<text x="16" y="224.6" font-size="13.0" fill="#3f9c66" font-weight="normal">|  engineer / ai research                   |</text>
+<text x="16" y="244.1" font-size="13.0" fill="#1f5236" font-weight="normal">+-------------------------------------------+</text>
+<rect x="211.0" y="193.7" width="8.2" height="14.0" fill="#39d353"><animate attributeName="opacity" values="1;1;0;0;1" dur="1.6s" repeatCount="indefinite"/></rect>
 </g>
 </svg>
