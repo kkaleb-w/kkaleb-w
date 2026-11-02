@@ -98,33 +98,41 @@ def fmt(n):
 def header(mode):
     c = T[mode]
     W, H = 1200, 300
-    b = [f'<defs>{halftone("a", c["ink"], 8, 1.6)}{halftone("b", c["orange"], 10, 2.4)}</defs>']
+    b = []
 
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="24" fill="{c["card"]}"/>')
-    b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="24" fill="url(#hta)" opacity="0.055"/>')
     b.append(misreg(2, 2, W - 4, H - 4, 24, c["orange"], 2.0, 3, 3, 0.30))
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="24" fill="none" '
              f'stroke="{c["rule"]}" stroke-width="1.4"/>')
-    b.append(f'<rect x="640" y="0" width="230" height="150" fill="url(#htb)" opacity="0.10"/>')
 
-    # illustration, right
-    b.append(doghouse(986, 208, 1.0, c["rust"], c["card"]))
-    b.append(leaf(1092, 118, 1.55, 18, c["orange"], .95, vein=c["card"]))
-    b.append(leaf(1046, 74, .95, -26, c["amber"], .9, vein=c["card"]))
-    b.append(leaf(1152, 196, 1.1, 44, c["rust"], .85))
-    b.append(leaf(906, 96, .8, -8, c["olive"], .8))
-    b.append(acorn(1136, 88, 1.0, c["mustard"], c["rust"], c["ink"]))
-    b.append(leaf(880, 232, .7, 30, c["mustard"], .7))
+    # branch, growing in from the right edge
+    b.append(f'<path d="M1202,66 C1110,84 1044,128 1006,192" fill="none" stroke="{c["ink"]}" '
+             f'stroke-width="7" stroke-linecap="round" opacity="0.92"/>')
+    b.append(f'<path d="M1094,100 C1080,84 1072,72 1066,58" fill="none" stroke="{c["ink"]}" '
+             f'stroke-width="4" stroke-linecap="round" opacity="0.9"/>')
+    b.append(f'<path d="M1046,140 C1030,132 1018,130 1004,131" fill="none" stroke="{c["ink"]}" '
+             f'stroke-width="3.4" stroke-linecap="round" opacity="0.9"/>')
 
-    # type, left
+    # leaves on and around the branch
+    b.append(leaf(1150, 96, 1.5, 28, c["orange"], .98, vein=c["card"]))
+    b.append(leaf(1078, 128, 1.25, -34, c["amber"], .96, vein=c["card"]))
+    b.append(leaf(1002, 168, 1.35, 52, c["rust"], .95, vein=c["card"]))
+    b.append(leaf(1058, 52, 1.0, 8, c["olive"], .9, vein=c["card"]))
+    b.append(leaf(1120, 206, .95, -14, c["mustard"], .9))
+    b.append(leaf(962, 96, .8, 64, c["rust"], .75))
+    b.append(leaf(1176, 178, .7, -48, c["amber"], .7))
+    b.append(acorn(1092, 196, 1.05, c["mustard"], c["rust"], c["ink"]))
+    b.append(acorn(1016, 84, .8, c["amber"], c["rust"], c["ink"]))
+
+    # type
     x = 92
-    b.append(text(x + 3, 146, "Kaleb Wright", 82, c["amber"], weight="bold", ls=-2, opacity=.32))
+    b.append(text(x + 3, 146, "Kaleb Wright", 82, c["amber"], weight="bold", ls=-2, opacity=.30))
     b.append(text(x, 143, "Kaleb Wright", 82, c["ink"], weight="bold", ls=-2))
-    b.append(f'<path d="M{x},176 C{x+90},168 {x+210},182 {x+286},172" fill="none" '
-             f'stroke="{c["orange"]}" stroke-width="3.2" stroke-linecap="round"/>')
-    b.append(text(x, 214, "est. 2020", 13.5, c["sub"], font=MONO, ls=2.4))
-    b.append(text(x + 110, 214, "/", 13.5, c["sub"], font=MONO, opacity=.5))
-    b.append(text(x + 130, 214, "github.com/kkaleb-w", 13.5, c["sub"], font=MONO, ls=0.4))
+    b.append(f'<path d="M{x},178 C{x+80},174 {x+180},178 {x+268},176" fill="none" '
+             f'stroke="{c["orange"]}" stroke-width="2.6" stroke-linecap="round"/>')
+    b.append(text(x, 216, "est. 2020", 13.5, c["ink"], font=MONO, ls=1.8, opacity=.75))
+    b.append(text(x + 104, 216, "·", 13.5, c["sub"], font=MONO))
+    b.append(text(x + 124, 216, "github.com/kkaleb-w", 13.5, c["sub"], font=MONO, ls=0.2))
 
     return svg(W, H, "\n".join(b), "Kaleb Wright")
 
@@ -156,12 +164,12 @@ def data_card(mode):
     bars_top = loc_top + 128
     H = int(bars_top + 4 * 42 + 52)
 
-    b.append(f'<defs>{halftone("d", c["ink"], 9, 1.8)}</defs>')
+
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="20" fill="{c["card"]}"/>')
     b.append(misreg(2, 2, W - 4, H - 4, 20, c["orange"], 1.8, 3, 3, 0.26))
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="20" fill="none" '
              f'stroke="{c["rule"]}" stroke-width="1.3"/>')
-    b.append(f'<rect x="{W-170}" y="2" width="168" height="{H-4}" rx="20" fill="url(#htd)" opacity="0.07"/>')
+
 
     # heading
     b.append(leaf(P + 6, 58, .62, -12, c["orange"]))
@@ -239,7 +247,7 @@ def activity(mode):
     grid_w = cols * (cell + gap) - gap
     H = int(top + 7 * (cell + gap) + 56)
 
-    b = [f'<defs>{halftone("e", c["ink"], 9, 1.8)}</defs>']
+    b = []
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="20" fill="{c["card"]}"/>')
     b.append(misreg(2, 2, W - 4, H - 4, 20, c["orange"], 1.8, 3, 3, 0.26))
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="20" fill="none" '
@@ -305,7 +313,7 @@ def lang_card(mode):
     row_h = 44
     H = int(120 + len(langs) * row_h + 30)
 
-    b = [f'<defs>{halftone("f", c["ink"], 9, 1.8)}</defs>']
+    b = []
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="20" fill="{c["card"]}"/>')
     b.append(misreg(2, 2, W - 4, H - 4, 20, c["orange"], 1.8, 3, 3, 0.26))
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="20" fill="none" '
