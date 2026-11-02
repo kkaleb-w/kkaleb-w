@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="369" height="123" viewBox="0 0 369 123" role="img" aria-label="commits 121 · active days 36 · repositories 10 · stars earned 2 · on github since 2020">
+<svg xmlns="http://www.w3.org/2000/svg" width="369" height="123" viewBox="0 0 369 123" role="img" aria-label="commits 122 · active days 36 · repositories 10 · stars earned 2 · on github since 2020">
 <style>text{font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;white-space:pre}</style>
 <defs><filter id="g" x="-15%" y="-30%" width="130%" height="160%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
 <g filter="url(#g)">
-<text x="10" y="25.8" font-size="13.0" fill="#4a9e6a">commits ....................</text><text x="325.1" y="25.8" font-size="13.0" fill="#39d353" font-weight="bold">121</text>
-<text x="10" y="46.9" font-size="13.0" fill="#4a9e6a">active days ....................</text><text x="325.1" y="46.9" font-size="13.0" fill="#39d353" font-weight="bold">36</text>
-<text x="10" y="68.0" font-size="13.0" fill="#4a9e6a">repositories ....................</text><text x="325.1" y="68.0" font-size="13.0" fill="#39d353" font-weight="bold">10</text>
-<text x="10" y="89.0" font-size="13.0" fill="#4a9e6a">stars earned ....................</text><text x="325.1" y="89.0" font-size="13.0" fill="#39d353" font-weight="bold">2</text>
+<text x="10" y="25.8" font-size="13.0" fill="#4a9e6a">commits         ....................</text><text x="325.1" y="25.8" font-size="13.0" fill="#39d353" font-weight="bold">122</text>
+<text x="10" y="46.9" font-size="13.0" fill="#4a9e6a">active days     ....................</text><text x="325.1" y="46.9" font-size="13.0" fill="#39d353" font-weight="bold">36</text>
+<text x="10" y="68.0" font-size="13.0" fill="#4a9e6a">repositories    ....................</text><text x="325.1" y="68.0" font-size="13.0" fill="#39d353" font-weight="bold">10</text>
+<text x="10" y="89.0" font-size="13.0" fill="#4a9e6a">stars earned    ....................</text><text x="325.1" y="89.0" font-size="13.0" fill="#39d353" font-weight="bold">2</text>
 <text x="10" y="110.1" font-size="13.0" fill="#4a9e6a">on github since ....................</text><text x="325.1" y="110.1" font-size="13.0" fill="#39d353" font-weight="bold">2020</text>
 </g>
 </svg>
