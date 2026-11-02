@@ -1,25 +1,13 @@
-<!doctype html>
-<meta charset="utf-8">
-<title>profile preview</title>
+<!doctype html><meta charset="utf-8">
 <style>
-  :root { color-scheme: light dark; }
-  body { margin:0; font-family: -apple-system, Segoe UI, sans-serif; }
-  .light { background:#f6f3ee; padding:40px; display:flex; flex-direction:column; gap:18px; align-items:center; }
-  .dark  { background:#0d1117; padding:40px; display:flex; flex-direction:column; gap:18px; align-items:center; }
-  img { max-width: 860px; width:100%; display:block; }
-  .hd { width:100%; max-width:860px; color:#888; font:12px/1 ui-monospace,monospace; letter-spacing:2px; }
+ body{margin:0;background:#F6F1E7;font:12px/1 ui-monospace,monospace}
+ .wrap{width:900px;margin:0 auto;padding:26px 0 60px;display:flex;flex-direction:column;gap:14px}
+ img{width:100%;display:block}
+ .d{color:#8a7a63;letter-spacing:2px}
 </style>
-<div class="light">
-  <div class="hd">LIGHT</div>
-  <img src="/assets/header-light.svg" style="max-width:1000px" alt="">
-  <img src="/assets/data-light.svg" alt="">
-  <img src="/assets/activity-light.svg" alt="">
-  <img src="/assets/langs-light.svg" alt="">
-</div>
-<div class="dark">
-  <div class="hd">DARK</div>
-  <img src="/assets/header-dark.svg" style="max-width:1000px" alt="">
-  <img src="/assets/data-dark.svg" alt="">
-  <img src="/assets/activity-dark.svg" alt="">
-  <img src="/assets/langs-dark.svg" alt="">
+<div class="wrap">
+ <div class="d">HEADER</div><img src="/assets/header-light.svg">
+ <div class="d">DATA</div><img src="/assets/data-light.svg">
+ <div class="d">ACTIVITY</div><img src="/assets/activity-light.svg">
+ <div class="d">LANGS</div><img src="/assets/langs-light.svg">
 </div>
