@@ -24,19 +24,45 @@ MONO = "'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace"
 T = {
     "light": dict(paper="#FBF1DC", card="#FFF9EC", ink="#3B2A1A", sub="#7C6A50",
                   rule="#E4CFA9", orange="#C2551F", amber="#D98B2B", rust="#8C3B12",
-                  olive="#6E7B3F", mustard="#E3B23C", shade="#F0DFBD"),
+                  olive="#6E7B3F", mustard="#E3B23C", shade="#F0DFBD", empty="#EBD8B6"),
     "dark": dict(paper="#181008", card="#221607", ink="#F4E5C8", sub="#BBA689",
                  rule="#48381F", orange="#E4813F", amber="#EBA84C", rust="#C05F31",
-                 olive="#9BA96B", mustard="#EFC65F", shade="#2C1D0E"),
+                 olive="#9BA96B", mustard="#EFC65F", shade="#2C1D0E", empty="#33240F"),
 }
 
-LEAF = ("M0,-12 L2.6,-4.8 L7.2,-7 L5,-2.2 L11.4,0 L5,2.4 L7.2,7 L2.6,4.8 "
-        "L0,12 L-2.6,4.8 L-7.2,7 L-5,2.4 L-11.4,0 L-5,-2.2 L-7.2,-7 L-2.6,-4.8 Z")
+LEAF = ("M0,-11 C1.5,-8.2 2.2,-7.2 3.2,-6.6 C4.6,-9 6,-9.4 7,-8.4 "
+        "C6.4,-6.4 6,-5 6.6,-4 C8.6,-5 10.4,-4.4 11,-3 "
+        "C9,-1.4 7.6,-0.6 7.1,0.9 C8.6,1.4 9.4,2.6 8.9,3.9 "
+        "C6.9,4.4 5,4.4 3.6,5 C3.1,7 2.1,8.4 0.7,9.4 L0.7,12 L-0.7,12 L-0.7,9.4 "
+        "C-2.1,8.4 -3.1,7 -3.6,5 C-5,4.4 -6.9,4.4 -8.9,3.9 "
+        "C-9.4,2.6 -8.6,1.4 -7.1,0.9 C-7.6,-0.6 -9,-1.4 -11,-3 "
+        "C-10.4,-4.4 -8.6,-5 -6.6,-4 C-6,-5 -6.4,-6.4 -7,-8.4 "
+        "C-6,-9.4 -4.6,-9 -3.2,-6.6 C-2.2,-7.2 -1.5,-8.2 0,-11 Z")
 
 
-def leaf(x, y, s, rot, fill, op=1.0):
+def leaf(x, y, s, rot, fill, op=1.0, vein=None):
+    v = ""
+    if vein:
+        v = (f'<path d="M0,-8 L0,10 M0,-2 L-6,-6 M0,-2 L6,-6 M0,3 L-5,7 M0,3 L5,7" '
+             f'stroke="{vein}" stroke-width="0.9" fill="none" opacity="0.5"/>')
     return (f'<g transform="translate({x},{y}) rotate({rot}) scale({s})" opacity="{op}">'
-            f'<path d="{LEAF}" fill="{fill}"/></g>')
+            f'<path d="{LEAF}" fill="{fill}"/>{v}</g>')
+
+
+def acorn(x, y, s, body, cap, ink):
+    return (f'<g transform="translate({x},{y}) scale({s})">'
+            f'<path d="M-7,-3 C-7,-8 -3,-10 0,-10 C3,-10 7,-8 7,-3 Z" fill="{cap}"/>'
+            f'<path d="M-6,-3 C-6,4 -3,10 0,11 C3,10 6,4 6,-3 Z" fill="{body}"/>'
+            f'<path d="M0,-10 L0,-13" stroke="{ink}" stroke-width="1.6" stroke-linecap="round"/></g>')
+
+
+def doghouse(x, y, s, ink, fill):
+    return (f'<g transform="translate({x},{y}) scale({s})">'
+            f'<path d="M-46,0 L0,-38 L46,0 L38,0 L38,54 L-38,54 L-38,0 Z" '
+            f'fill="{fill}" stroke="{ink}" stroke-width="3" stroke-linejoin="round"/>'
+            f'<path d="M-20,54 L-20,26 C-20,14 20,14 20,26 L20,54" '
+            f'fill="none" stroke="{ink}" stroke-width="3"/>'
+            f'<path d="M-40,-2 L40,-2" stroke="{ink}" stroke-width="3" opacity="0"/></g>')
 
 
 def halftone(uid, c, size=7, r=1.7):
@@ -72,37 +98,33 @@ def fmt(n):
 def header(mode):
     c = T[mode]
     W, H = 1200, 300
-    b = []
-    b.append(f'<defs>{halftone("a", c["ink"], 8, 1.6)}{halftone("b", c["orange"], 10, 2.2)}</defs>')
+    b = [f'<defs>{halftone("a", c["ink"], 8, 1.6)}{halftone("b", c["orange"], 10, 2.4)}</defs>']
 
-    # paper panel
-    b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="22" fill="{c["card"]}"/>')
-    b.append(misreg(2, 2, W - 4, H - 4, 22, c["orange"], 2.0, 3, 3, 0.30))
-    b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="22" fill="none" '
+    b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="24" fill="{c["card"]}"/>')
+    b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="24" fill="url(#hta)" opacity="0.055"/>')
+    b.append(misreg(2, 2, W - 4, H - 4, 24, c["orange"], 2.0, 3, 3, 0.30))
+    b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="24" fill="none" '
              f'stroke="{c["rule"]}" stroke-width="1.4"/>')
+    b.append(f'<rect x="640" y="0" width="230" height="150" fill="url(#htb)" opacity="0.10"/>')
 
-    # halftone corners
-    b.append(f'<rect x="{W-250}" y="2" width="180" height="120" rx="22" fill="url(#hta)" opacity="0.10"/>')
-    b.append(f'<rect x="2" y="{H-110}" width="150" height="100" rx="22" fill="url(#htb)" opacity="0.09"/>')
+    # illustration, right
+    b.append(doghouse(986, 208, 1.0, c["rust"], c["card"]))
+    b.append(leaf(1092, 118, 1.55, 18, c["orange"], .95, vein=c["card"]))
+    b.append(leaf(1046, 74, .95, -26, c["amber"], .9, vein=c["card"]))
+    b.append(leaf(1152, 196, 1.1, 44, c["rust"], .85))
+    b.append(leaf(906, 96, .8, -8, c["olive"], .8))
+    b.append(acorn(1136, 88, 1.0, c["mustard"], c["rust"], c["ink"]))
+    b.append(leaf(880, 232, .7, 30, c["mustard"], .7))
 
-    # leaves
-    b += [
-        leaf(96, 96, 1.5, -18, c["orange"]),
-        leaf(168, 208, 1.0, 26, c["rust"], .9),
-        leaf(W - 150, 214, 1.25, -34, c["amber"], .95),
-        leaf(W - 92, 96, .85, 12, c["olive"], .85),
-        leaf(250, 62, .7, 40, c["mustard"], .8),
-        leaf(W - 268, 250, .6, -8, c["rust"], .7),
-    ]
-
-    # name, printed twice
-    cx = W / 2
-    b.append(text(cx + 3, 158, "Kaleb Wright", 76, c["amber"], weight="bold",
-                  anchor="middle", ls=-1.5, opacity=.35))
-    b.append(text(cx, 155, "Kaleb Wright", 76, c["ink"], weight="bold", anchor="middle", ls=-1.5))
-    b.append(f'<path d="M{cx-150},186 C{cx-60},178 {cx+60},194 {cx+150},184" fill="none" '
-             f'stroke="{c["orange"]}" stroke-width="3" stroke-linecap="round" opacity="0.85"/>')
-    b.append(text(cx, 232, "e s t .  2 0 2 0", 15, c["sub"], font=MONO, anchor="middle", ls=2))
+    # type, left
+    x = 92
+    b.append(text(x + 3, 146, "Kaleb Wright", 82, c["amber"], weight="bold", ls=-2, opacity=.32))
+    b.append(text(x, 143, "Kaleb Wright", 82, c["ink"], weight="bold", ls=-2))
+    b.append(f'<path d="M{x},176 C{x+90},168 {x+210},182 {x+286},172" fill="none" '
+             f'stroke="{c["orange"]}" stroke-width="3.2" stroke-linecap="round"/>')
+    b.append(text(x, 214, "est. 2020", 13.5, c["sub"], font=MONO, ls=2.4))
+    b.append(text(x + 110, 214, "/", 13.5, c["sub"], font=MONO, opacity=.5))
+    b.append(text(x + 130, 214, "github.com/kkaleb-w", 13.5, c["sub"], font=MONO, ls=0.4))
 
     return svg(W, H, "\n".join(b), "Kaleb Wright")
 
@@ -122,29 +144,29 @@ def data_card(mode):
         ("longest streak", f'{D["longest_streak"]} d', "in a row"),
         ("storage", f'{D["storage_kb"]/1024:.0f} MB', "on github"),
         ("active days", str(sum(1 for _, n in D["calendar"] if n > 0)), "of 366"),
-        ("since", D["since"], "public code"),
+        ("languages", str(len(languages())), "in use"),
     ]
 
     # calculate height
-    grid_top = 150
-    row_h = 74
+    grid_top = 142
+    row_h = 70
     rows = 2
     grid_bottom = grid_top + rows * row_h
-    loc_top = grid_bottom + 58
-    bars_top = loc_top + 150
-    H = int(bars_top + 4 * 46 + 70)
+    loc_top = grid_bottom + 46
+    bars_top = loc_top + 128
+    H = int(bars_top + 4 * 42 + 52)
 
     b.append(f'<defs>{halftone("d", c["ink"], 9, 1.8)}</defs>')
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="20" fill="{c["card"]}"/>')
     b.append(misreg(2, 2, W - 4, H - 4, 20, c["orange"], 1.8, 3, 3, 0.26))
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="20" fill="none" '
              f'stroke="{c["rule"]}" stroke-width="1.3"/>')
-    b.append(f'<rect x="{W-170}" y="2" width="168" height={H-4} rx="20" fill="url(#htd)" opacity="0.07"/>')
+    b.append(f'<rect x="{W-170}" y="2" width="168" height="{H-4}" rx="20" fill="url(#htd)" opacity="0.07"/>')
 
     # heading
     b.append(leaf(P + 6, 58, .62, -12, c["orange"]))
-    b.append(text(P + 26, 68, "MY GITHUB DATA", 15, c["sub"], font=MONO, ls=3.4))
-    b.append(text(W - P, 68, "github.com/kkaleb-w", 13, c["sub"], font=MONO, anchor="end", ls=0.5))
+    b.append(text(P + 26, 69, "my github data", 17, c["sub"], weight="bold", ls=2.6))
+    b.append(text(W - P, 68, "github.com/kkaleb-w", 12.5, c["sub"], font=MONO, anchor="end", ls=0.4, opacity=.85))
     b.append(f'<path d="M{P},92 C{P+180},86 {W-P-180},98 {W-P},90" fill="none" '
              f'stroke="{c["rule"]}" stroke-width="1.4"/>')
 
@@ -161,11 +183,12 @@ def data_card(mode):
     # lines of code
     b.append(f'<path d="M{P},{loc_top-8} C{P+200},{loc_top-14} {W-P-200},{loc_top-2} {W-P},{loc_top-10}" '
              f'fill="none" stroke="{c["rule"]}" stroke-width="1.4"/>')
-    b.append(text(P, loc_top + 28, "LINES OF CODE", 15, c["sub"], font=MONO, ls=3.4))
-    b.append(text(P, loc_top + 88, fmt(D["loc"]), 58, c["orange"], weight="bold", ls=-1))
-    b.append(text(P + 6, loc_top + 116, f'across {D["loc_files"]} source files, '
-                                      f'{len([k for k, v in D["loc_per_repo"].items() if v])} repositories',
-                  13.5, c["sub"], font=MONO))
+    b.append(text(P, loc_top + 26, "lines of code", 17, c["sub"], weight="bold", ls=2.6))
+    b.append(text(P, loc_top + 84, fmt(D["loc"]), 54, c["orange"], weight="bold", ls=-1))
+    b.append(text(W - P, loc_top + 78, f'{D["loc_files"]} source files', 13.5, c["sub"],
+                  font=MONO, anchor="end"))
+    b.append(text(W - P, loc_top + 98, f'across {len([k for k, v in D["loc_per_repo"].items() if v])} repositories',
+                  13.5, c["sub"], font=MONO, anchor="end"))
 
     # rhythm bars
     hours = D["hours"]
@@ -176,12 +199,12 @@ def data_card(mode):
         ("night", "22–4", sum(hours[22:24]) + sum(hours[0:5])),
     ]
     total = max(1, sum(v for _, _, v in buckets))
-    b.append(text(P, bars_top - 14, "WHEN I COMMIT", 15, c["sub"], font=MONO, ls=3.4))
+    b.append(text(P, bars_top - 16, "when i commit", 17, c["sub"], weight="bold", ls=2.6))
 
     bar_x = P + 132
     bar_w = W - P - bar_x - 78
     for i, (name, span, v) in enumerate(buckets):
-        y = bars_top + 18 + i * 46
+        y = bars_top + 16 + i * 42
         pct = v / total
         b.append(text(P, y + 5, name, 15, c["ink"]))
         b.append(text(P + 96, y + 5, span, 12, c["sub"], font=MONO))
@@ -222,11 +245,11 @@ def activity(mode):
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="20" fill="none" '
              f'stroke="{c["rule"]}" stroke-width="1.3"/>')
 
-    b.append(text(P, 46, "THE YEAR IN COMMITS", 15, c["sub"], font=MONO, ls=3.4))
+    b.append(text(P, 47, "the year in commits", 17, c["sub"], weight="bold", ls=2.6))
     b.append(text(W - P, 46, f'{fmt(D["contributions_12mo"])} contributions', 13, c["sub"],
                   font=MONO, anchor="end"))
 
-    scale = [c["shade"], "#E9C58A" if mode == "light" else "#6B4A24",
+    scale = [c["empty"], "#E4BC7E" if mode == "light" else "#6B4A24",
              c["mustard"], c["amber"], c["orange"], c["rust"]]
 
     def bucket(n):
@@ -243,10 +266,10 @@ def activity(mode):
 
     # legend
     ly = top + 7 * (cell + gap) + 18
-    b.append(text(P, ly + 8, "less", 11, c["sub"], font=MONO))
+    b.append(text(P, ly + 9, "less", 12, c["sub"]))
     for i, col in enumerate(scale):
-        b.append(f'<rect x="{P+34+i*18}" y="{ly}" width="12" height="12" rx="2.5" fill="{col}"/>')
-    b.append(text(P + 34 + 6 * 18 + 2, ly + 8, "more", 11, c["sub"], font=MONO))
+        b.append(f'<rect x="{P+40+i*19}" y="{ly}" width="13" height="13" rx="2.5" fill="{col}"/>')
+    b.append(text(P + 40 + 6 * 19 + 3, ly + 9, "more", 12, c["sub"]))
 
     return svg(W, H, "\n".join(b), "Contributions over the last year")
 
@@ -287,7 +310,7 @@ def lang_card(mode):
     b.append(misreg(2, 2, W - 4, H - 4, 20, c["orange"], 1.8, 3, 3, 0.26))
     b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="20" fill="none" '
              f'stroke="{c["rule"]}" stroke-width="1.3"/>')
-    b.append(text(P, 46, "WHERE THE CODE IS", 15, c["sub"], font=MONO, ls=3.4))
+    b.append(text(P, 47, "where the code is", 17, c["sub"], weight="bold", ls=2.6))
     b.append(text(W - P, 46, "by bytes, public repos", 13, c["sub"], font=MONO, anchor="end"))
 
     cols = [c["orange"], c["amber"], c["olive"], c["rust"], c["mustard"], c["sub"]]
