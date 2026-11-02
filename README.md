@@ -1,21 +1,35 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/banner-dark.svg">
-  <img src="assets/banner-light.svg" width="470" alt="Kaleb">
-</picture>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/header-dark.svg">
+    <img src="assets/header-light.svg" width="100%" alt="Kaleb Wright">
+  </picture>
+</p>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/ledger-dark.svg">
-  <img src="assets/ledger-light.svg" width="470" alt="commits 121, active days 36, repositories 10, stars earned 2, on github since 2020">
-</picture>
+<p align="center">
+  <a href="https://github.com/kkaleb-w"><img src="https://komarev.com/ghpvc/?username=kkaleb-w&label=profile%20views&color=C2551F&style=flat-square" alt="profile views"></a>
+</p>
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/commits-dark.svg">
-  <img src="assets/commits-light.svg" width="100%" alt="Contribution graph, last twelve months">
-</picture>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/data-dark.svg">
+    <img src="assets/data-light.svg" width="100%" alt="My GitHub data: contributions this year, commits, repositories, stars, longest streak, lines of code">
+  </picture>
+</p>
 
-[mail](mailto:kkaleb-w@users.noreply.github.com) · [github](https://github.com/kkaleb-w)
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/activity-dark.svg">
+    <img src="assets/activity-light.svg" width="100%" alt="Contributions over the last year">
+  </picture>
+</p>
 
-<!--
-  every number is generated from the API, not typed by hand:
-      python3 tools/generate_assets.py
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/langs-dark.svg">
+    <img src="assets/langs-light.svg" width="100%" alt="Languages by lines of code">
+  </picture>
+</p>
+
+<!-- every number is measured, not typed:
+     python3 tools/collect.py && python3 tools/langs.py && python3 tools/build.py
 -->

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-label="Kaleb Wright">
+<defs><pattern id="hta" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="4.0" cy="4.0" r="1.6" fill="#3B2A1A"/></pattern><pattern id="htb" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="5.0" cy="5.0" r="2.2" fill="#C2551F"/></pattern></defs>
+<rect x="2" y="2" width="1196" height="296" rx="22" fill="#FFF9EC"/>
+<rect x="5" y="5" width="1196" height="296" rx="22" fill="none" stroke="#C2551F" stroke-width="2.0" opacity="0.3"/>
+<rect x="2" y="2" width="1196" height="296" rx="22" fill="none" stroke="#E4CFA9" stroke-width="1.4"/>
+<rect x="950" y="2" width="180" height="120" rx="22" fill="url(#hta)" opacity="0.10"/>
+<rect x="2" y="190" width="150" height="100" rx="22" fill="url(#htb)" opacity="0.09"/>
+<g transform="translate(96,96) rotate(-18) scale(1.5)" opacity="1.0"><path d="M0,-12 L2.6,-4.8 L7.2,-7 L5,-2.2 L11.4,0 L5,2.4 L7.2,7 L2.6,4.8 L0,12 L-2.6,4.8 L-7.2,7 L-5,2.4 L-11.4,0 L-5,-2.2 L-7.2,-7 L-2.6,-4.8 Z" fill="#C2551F"/></g>
+<g transform="translate(168,208) rotate(26) scale(1.0)" opacity="0.9"><path d="M0,-12 L2.6,-4.8 L7.2,-7 L5,-2.2 L11.4,0 L5,2.4 L7.2,7 L2.6,4.8 L0,12 L-2.6,4.8 L-7.2,7 L-5,2.4 L-11.4,0 L-5,-2.2 L-7.2,-7 L-2.6,-4.8 Z" fill="#8C3B12"/></g>
+<g transform="translate(1050,214) rotate(-34) scale(1.25)" opacity="0.95"><path d="M0,-12 L2.6,-4.8 L7.2,-7 L5,-2.2 L11.4,0 L5,2.4 L7.2,7 L2.6,4.8 L0,12 L-2.6,4.8 L-7.2,7 L-5,2.4 L-11.4,0 L-5,-2.2 L-7.2,-7 L-2.6,-4.8 Z" fill="#D98B2B"/></g>
+<g transform="translate(1108,96) rotate(12) scale(0.85)" opacity="0.85"><path d="M0,-12 L2.6,-4.8 L7.2,-7 L5,-2.2 L11.4,0 L5,2.4 L7.2,7 L2.6,4.8 L0,12 L-2.6,4.8 L-7.2,7 L-5,2.4 L-11.4,0 L-5,-2.2 L-7.2,-7 L-2.6,-4.8 Z" fill="#6E7B3F"/></g>
+<g transform="translate(250,62) rotate(40) scale(0.7)" opacity="0.8"><path d="M0,-12 L2.6,-4.8 L7.2,-7 L5,-2.2 L11.4,0 L5,2.4 L7.2,7 L2.6,4.8 L0,12 L-2.6,4.8 L-7.2,7 L-5,2.4 L-11.4,0 L-5,-2.2 L-7.2,-7 L-2.6,-4.8 Z" fill="#E3B23C"/></g>
+<g transform="translate(932,250) rotate(-8) scale(0.6)" opacity="0.7"><path d="M0,-12 L2.6,-4.8 L7.2,-7 L5,-2.2 L11.4,0 L5,2.4 L7.2,7 L2.6,4.8 L0,12 L-2.6,4.8 L-7.2,7 L-5,2.4 L-11.4,0 L-5,-2.2 L-7.2,-7 L-2.6,-4.8 Z" fill="#8C3B12"/></g>
+<text x="603.0" y="158" font-family="'Iowan Old Style','Palatino Linotype',Palatino,Georgia,'Times New Roman',serif" font-size="76" fill="#D98B2B" font-weight="bold" text-anchor="middle" letter-spacing="-1.5" opacity="0.35">Kaleb Wright</text>
+<text x="600.0" y="155" font-family="'Iowan Old Style','Palatino Linotype',Palatino,Georgia,'Times New Roman',serif" font-size="76" fill="#3B2A1A" font-weight="bold" text-anchor="middle" letter-spacing="-1.5" opacity="1">Kaleb Wright</text>
+<path d="M450.0,186 C540.0,178 660.0,194 750.0,184" fill="none" stroke="#C2551F" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<text x="600.0" y="232" font-family="'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace" font-size="15" fill="#7C6A50" font-weight="normal" text-anchor="middle" letter-spacing="2" opacity="1">e s t .  2 0 2 0</text>
+</svg>
