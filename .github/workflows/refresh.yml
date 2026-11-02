@@ -1,0 +1,46 @@
+name: refresh profile
+
+on:
+  schedule:
+    - cron: "17 5 * * *"      # 05:17 UTC daily
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-profile
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Measure
+        # PROFILE_TOKEN needs `repo` scope: the collectors clone private repos
+        # too, and the default GITHUB_TOKEN can only see this repository.
+        env:
+          GH_TOKEN: ${{ secrets.PROFILE_TOKEN }}
+          PROFILE_TOKEN: ${{ secrets.PROFILE_TOKEN }}
+        run: |
+          python3 tools/collect.py
+          python3 tools/langs.py
+          python3 tools/build.py
+
+      - name: Commit if the numbers moved
+        run: |
+          git config user.name "kkaleb-w"
+          git config user.email "kalebrwright@gmail.com"
+          git add -A
+          if git diff --quiet --cached; then
+            echo "nothing changed"
+            exit 0
+          fi
+          git commit -m "chore: refresh profile data"
+          git push

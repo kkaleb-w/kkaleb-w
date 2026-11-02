@@ -340,10 +340,27 @@ def lang_card(mode):
     return svg(W, H, "\n".join(b), "Languages")
 
 
+def stamp():
+    """Put a content hash in the README image URLs — camo caches by URL."""
+    import hashlib, re
+    h = hashlib.sha1()
+    for f in sorted(OUT.glob("*.svg")):
+        h.update(f.read_bytes())
+    tag = h.hexdigest()[:8]
+    readme = ROOT / "README.md"
+    txt = readme.read_text()
+    new, n = re.subn(r"\?v=[0-9a-f]+", f"?v={tag}", txt)
+    if n:
+        readme.write_text(new)
+    return tag, n
+
+
 if __name__ == "__main__":
     for mode in ("light", "dark"):
         for name, fn in (("header", header), ("data", data_card),
                          ("activity", activity), ("langs", lang_card)):
             (OUT / f"{name}-{mode}.svg").write_text(fn(mode))
         print("rendered", mode)
+    tag, n = stamp()
+    print(f"cache tag {tag} on {n} refs")
     print("loc", D["loc"], "files", D["loc_files"], "langs", languages()[:3])

@@ -22,15 +22,17 @@ env = {**os.environ, "GIT_TERMINAL_PROMPT": "0",
        "GIT_SSH_COMMAND": "ssh -o BatchMode=yes -o StrictHostKeyChecking=no"}
 work = Path(tempfile.mkdtemp(prefix="lg-"))
 counts = {}
+failed = []
 
 for r in repos:
     if r["fork"]:
         continue
     d = work / r["name"]
     try:
-        subprocess.run(["git", "clone", "--depth", "1", "-q", r["ssh_url"], str(d)],
+        subprocess.run(["git", "clone", "--depth", "1", "-q", clone_url(r), str(d)],
                        check=True, timeout=300, capture_output=True, env=env)
-    except Exception:
+    except Exception as e:
+        failed.append(r["name"])
         continue
     for root, dirs, names in os.walk(d):
         dirs[:] = [x for x in dirs if x not in SKIP_DIR]
@@ -48,3 +50,5 @@ for r in repos:
 shutil.rmtree(work, ignore_errors=True)
 (ROOT / "data" / "loc_by_ext.json").write_text(json.dumps(counts, indent=1, sort_keys=True))
 print(json.dumps(dict(sorted(counts.items(), key=lambda kv: -kv[1])), indent=1))
+if failed:
+    raise SystemExit(f"clone failures: {failed}")

@@ -24,7 +24,16 @@ SKIP_DIR = {".git", "node_modules", "dist", "build", ".next", "venv", ".venv",
             "data", "datasets", "models", "checkpoints", "cache", "coverage",
             "public", "static", "assets", "out", ".turbo", ".cache"}
 
-env = {**os.environ, "GIT_TERMINAL_PROMPT": "0", "GIT_SSH_COMMAND": "ssh -o BatchMode=yes -o StrictHostKeyChecking=no"}
+TOKEN = os.environ.get("GH_TOKEN") or os.environ.get("PROFILE_TOKEN") or ""
+env = {**os.environ, "GIT_TERMINAL_PROMPT": "0",
+       "GIT_SSH_COMMAND": "ssh -o BatchMode=yes -o StrictHostKeyChecking=no"}
+
+
+def clone_url(repo):
+    """https+token in CI, ssh on the laptop."""
+    if TOKEN:
+        return f'https://x-access-token:{TOKEN}@github.com/{repo["full_name"]}.git'
+    return repo["ssh_url"]
 
 loc = files = 0
 per_repo, failed = {}, {}
@@ -36,7 +45,7 @@ for r in owned:
     d = WORK / r["name"]
     # full history, blobs on demand: cheap clone that still has every commit date
     try:
-        subprocess.run(["git", "clone", "--filter=blob:none", "-q", r["ssh_url"], str(d)],
+        subprocess.run(["git", "clone", "--filter=blob:none", "-q", clone_url(r), str(d)],
                        check=True, timeout=300, capture_output=True, env=env)
     except Exception as e:
         failed[r["name"]] = str(e)[:80]
@@ -115,3 +124,5 @@ data = {
 print(json.dumps({k: v for k, v in data.items() if k not in ("calendar", "loc_per_repo")}, indent=1))
 print("per repo:", per_repo)
 print("failed:", failed)
+if failed:
+    raise SystemExit(f"clone failures, refusing to publish partial data: {list(failed)}")
