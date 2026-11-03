@@ -359,7 +359,7 @@ def stamp():
 # ─────────────────────────── the one panel ─────────────────────────────────
 def panel(mode):
     c = T[mode]
-    W, H = 1000, 1016
+    W, H = 1000, 1040
     P, R = 48, 952
     b = []
 
@@ -438,19 +438,17 @@ def panel(mode):
     b.append(text(bx, 480, "when i commit", 16, c["sub"], weight="bold", ls=2.4))
     bar_x, bar_w = bx + 116, R - bx - 116 - 46
     for i, (name, span, v, fill) in enumerate(buckets):
-        y = 512 + i * 36
+        y = 512 + i * 34
         b.append(text(bx, y + 4, name, 14, c["ink"]))
         b.append(text(bx + 72, y + 4, span, 11, c["sub"], font=MONO))
         b.append(f'<rect x="{bar_x}" y="{y-8}" width="{bar_w}" height="13" rx="6.5" fill="{c["shade"]}"/>')
         b.append(f'<rect x="{bar_x}" y="{y-8}" width="{max(5, bar_w*v/total):.1f}" height="13" '
                  f'rx="6.5" fill="{fill}"/>')
         b.append(text(R, y + 4, f"{v/total*100:.0f}%", 13, c["sub"], font=MONO, anchor="end"))
-    rule(612)
+    rule(626)
 
     # ── the year ───────────────────────────────────────────────────────────
-    b.append(text(P, 650, "the year in commits", 16, c["sub"], weight="bold", ls=2.4))
-    b.append(text(R, 650, f'{fmt(D["contributions_12mo"])} contributions', 12.5, c["sub"],
-                  font=MONO, anchor="end"))
+    b.append(text(P, 664, "the year in commits", 16, c["sub"], weight="bold", ls=2.4))
 
     import datetime as dt
     dates = {d: n for d, n in D["calendar"]}
@@ -463,7 +461,7 @@ def panel(mode):
         return 0 if n == 0 else 1 if n <= 1 else 2 if n <= 3 else 3 if n <= 6 else 4 if n <= 12 else 5
 
     cols_n = (dt.date.fromisoformat(max(dates)) - start).days // 7 + 1
-    gap, top = 3.6, 674
+    gap, top = 3.6, 688
     cell = ((R - P) - (cols_n - 1) * gap) / cols_n
     for date, n in dates.items():
         d0 = dt.date.fromisoformat(date)
@@ -473,22 +471,24 @@ def panel(mode):
                  f'fill="{scale[bucket(n)]}" stroke="{c["rule"]}" stroke-width="0.6" '
                  f'stroke-opacity="0.5"/>')
 
-    # legend sits on the label row, right aligned
-    lx = R - 5 * 17 - 60
-    b.append(text(lx - 24, 650, "less", 11, c["sub"], font=MONO))
+    # legend sits on the label row, right aligned, with real gaps
+    sw, sgap, n = 13, 5, len(scale)
+    band = 34 + n * sw + (n - 1) * sgap + 4          # "less" + swatches + pad
+    lx = R - (band + 30)                             # 30 = width of "more"
+    b.append(text(lx, 664, "less", 11, c["sub"], font=MONO))
     for i, col in enumerate(scale):
-        b.append(f'<rect x="{lx + i*17}" y="{640}" width="13" height="13" rx="2.6" fill="{col}" '
-                 f'stroke="{c["rule"]}" stroke-width="0.6" stroke-opacity="0.5"/>')
-    b.append(text(lx + 5 * 17 + 4, 650, "more", 11, c["sub"], font=MONO))
-    rule(812)
+        b.append(f'<rect x="{lx + 34 + i*(sw+sgap)}" y="{654}" width="{sw}" height="{sw}" rx="2.6" '
+                 f'fill="{col}" stroke="{c["rule"]}" stroke-width="0.6" stroke-opacity="0.5"/>')
+    b.append(text(lx + band + 4, 664, "more", 11, c["sub"], font=MONO))
+    rule(826)
 
     # ── languages ──────────────────────────────────────────────────────────
-    b.append(text(P, 850, "where the code is", 16, c["sub"], weight="bold", ls=2.4))
+    b.append(text(P, 864, "where the code is", 16, c["sub"], weight="bold", ls=2.4))
     cols = [c["orange"], c["amber"], c["olive"], c["rust"], c["mustard"], c["sub"]]
     for i, (name, share) in enumerate(languages()):
         col, row = divmod(i, 3)
         x = P + col * 476
-        y = 890 + row * 42
+        y = 904 + row * 42
         b.append(text(x, y, name, 14, c["ink"]))
         b.append(f'<rect x="{x+120}" y="{y-9}" width="230" height="12" rx="6" fill="{c["shade"]}"/>')
         b.append(f'<rect x="{x+120}" y="{y-9}" width="{max(5, 230*share):.1f}" height="12" '
