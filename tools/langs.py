@@ -18,8 +18,18 @@ SKIP_DIR = {".git", "node_modules", "dist", "build", ".next", "venv", ".venv",
             "data", "datasets", "models", "checkpoints", "cache", "coverage",
             "public", "static", "assets", "out", ".turbo", ".cache"}
 
+TOKEN = os.environ.get("GH_TOKEN") or os.environ.get("PROFILE_TOKEN") or ""
 env = {**os.environ, "GIT_TERMINAL_PROMPT": "0",
        "GIT_SSH_COMMAND": "ssh -o BatchMode=yes -o StrictHostKeyChecking=no"}
+
+
+def clone_url(repo):
+    """https+token in CI, ssh on the laptop."""
+    if TOKEN:
+        return f'https://x-access-token:{TOKEN}@github.com/{repo["full_name"]}.git'
+    return repo["ssh_url"]
+
+
 work = Path(tempfile.mkdtemp(prefix="lg-"))
 counts = {}
 failed = []
@@ -32,7 +42,7 @@ for r in repos:
         subprocess.run(["git", "clone", "--depth", "1", "-q", clone_url(r), str(d)],
                        check=True, timeout=300, capture_output=True, env=env)
     except Exception as e:
-        failed.append(r["name"])
+        failed.append((r["name"], str(e)[:160]))
         continue
     for root, dirs, names in os.walk(d):
         dirs[:] = [x for x in dirs if x not in SKIP_DIR]
