@@ -355,11 +355,152 @@ def stamp():
     return tag, n
 
 
+
+# ─────────────────────────── the one panel ─────────────────────────────────
+def panel(mode):
+    c = T[mode]
+    W, H = 1000, 1016
+    P, R = 48, 952
+    b = []
+
+    # paper
+    b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="26" fill="{c["card"]}"/>')
+    b.append(misreg(2, 2, W - 4, H - 4, 26, c["orange"], 2.0, 3, 3, 0.28))
+    b.append(f'<rect x="2" y="2" width="{W-4}" height="{H-4}" rx="26" fill="none" '
+             f'stroke="{c["rule"]}" stroke-width="1.4"/>')
+
+    def rule(y):
+        b.append(f'<path d="M{P},{y} C{P+240},{y-5} {R-240},{y+5} {R},{y-1}" fill="none" '
+                 f'stroke="{c["rule"]}" stroke-width="1.3"/>')
+
+    # ── masthead ───────────────────────────────────────────────────────────
+    b.append(f'<path d="M1006,30 C900,54 806,96 744,150 C720,170 704,186 696,200" '
+             f'fill="none" stroke="{c["ink"]}" stroke-width="8.5" stroke-linecap="round"/>')
+    b.append(f'<path d="M812,80 C788,66 766,58 744,56" fill="none" stroke="{c["ink"]}" '
+             f'stroke-width="3.4" stroke-linecap="round" opacity="0.9"/>')
+    b.append(f'<path d="M760,138 C736,140 716,146 700,154" fill="none" stroke="{c["ink"]}" '
+             f'stroke-width="3" stroke-linecap="round" opacity="0.85"/>')
+    b.append(leaf(918, 60, 1.3, 202, c["orange"], .97, vein=c["card"]))
+    b.append(leaf(846, 96, 1.45, 156, c["amber"], .96, vein=c["card"]))
+    b.append(leaf(760, 148, 1.2, 122, c["rust"], .95, vein=c["card"]))
+    b.append(leaf(740, 54, 1.15, -22, c["olive"], .92, vein=c["card"]))
+    b.append(leaf(700, 152, .9, 70, c["mustard"], .9))
+    b.append(leaf(878, 140, .8, 40, c["rust"], .8))
+    b.append(acorn(806, 118, .95, c["mustard"], c["rust"], c["ink"]))
+    b.append(leaf(650, 96, .7, -44, c["amber"], .5))
+    b.append(leaf(660, 196, .55, 26, c["rust"], .45))
+    b.append(leaf(1000, 132, .6, 12, c["rust"], .55))
+
+    b.append(text(P, 136, "Kaleb Wright", 74, c["ink"], weight="bold", ls=-1.8))
+    b.append(f'<path d="M{P},168 C{P+80},164 {P+180},168 {P+262},166" fill="none" '
+             f'stroke="{c["orange"]}" stroke-width="2.6" stroke-linecap="round"/>')
+    b.append(leaf(330, 166, 1.0, -22, c["orange"], .95, vein=c["card"]))
+    b.append(text(P, 202, "est. 2020", 14.5, c["sub"], style='font-style="italic"'))
+    b.append(text(P + 76, 202, "·", 14.5, c["sub"]))
+    b.append(text(P + 94, 202, "github.com/kkaleb-w", 14.5, c["sub"], style='font-style="italic"'))
+    rule(246)
+
+    # ── eight numbers ──────────────────────────────────────────────────────
+    stats = [
+        ("contributions", fmt(D["contributions_year"]), "this year"),
+        ("commits", fmt(D["commits"]), "last 12 mo"),
+        ("repositories", str(D["repos_total"]), f'{D["private"]} private'),
+        ("stars", str(D["stars"]), "earned"),
+        ("longest streak", f'{D["longest_streak"]} d', "in a row"),
+        ("storage", f'{D["storage_kb"]/1024:.0f} MB', "on github"),
+        ("active days", str(sum(1 for _, n in D["calendar"] if n > 0)), "of 366"),
+        ("languages", str(len(languages())), "in use"),
+    ]
+    col_w = (R - P) / 4
+    for i, (label, val, note) in enumerate(stats):
+        r, col = divmod(i, 4)
+        x = P + col * col_w
+        y = 292 + r * 74
+        b.append(text(x, y, label, 13.5, c["sub"], font=MONO, ls=1))
+        b.append(text(x, y + 36, val, 30, c["ink"], weight="bold"))
+        b.append(text(x, y + 57, note, 12.5, c["sub"], opacity=.88))
+    rule(440)
+
+    # ── lines of code, and when ─────────────────────────────────────────────
+    b.append(text(P, 480, "lines of code", 16, c["sub"], weight="bold", ls=2.4))
+    b.append(text(P, 542, fmt(D["loc"]), 52, c["orange"], weight="bold", ls=-1))
+    b.append(text(P, 568, f'{D["loc_files"]} source files across '
+                           f'{len([k for k, v in D["loc_per_repo"].items() if v])} repositories',
+                  12.5, c["sub"], font=MONO))
+
+    hours = D["hours"]
+    buckets = [("morning", "5–11", sum(hours[5:12]), c["mustard"]),
+               ("daytime", "12–16", sum(hours[12:17]), c["amber"]),
+               ("evening", "17–21", sum(hours[17:22]), c["orange"]),
+               ("night", "22–4", sum(hours[22:24]) + sum(hours[0:5]), c["rust"])]
+    total = max(1, sum(v for _, _, v, _ in buckets))
+    bx = 520
+    b.append(text(bx, 480, "when i commit", 16, c["sub"], weight="bold", ls=2.4))
+    bar_x, bar_w = bx + 116, R - bx - 116 - 46
+    for i, (name, span, v, fill) in enumerate(buckets):
+        y = 512 + i * 36
+        b.append(text(bx, y + 4, name, 14, c["ink"]))
+        b.append(text(bx + 72, y + 4, span, 11, c["sub"], font=MONO))
+        b.append(f'<rect x="{bar_x}" y="{y-8}" width="{bar_w}" height="13" rx="6.5" fill="{c["shade"]}"/>')
+        b.append(f'<rect x="{bar_x}" y="{y-8}" width="{max(5, bar_w*v/total):.1f}" height="13" '
+                 f'rx="6.5" fill="{fill}"/>')
+        b.append(text(R, y + 4, f"{v/total*100:.0f}%", 13, c["sub"], font=MONO, anchor="end"))
+    rule(612)
+
+    # ── the year ───────────────────────────────────────────────────────────
+    b.append(text(P, 650, "the year in commits", 16, c["sub"], weight="bold", ls=2.4))
+    b.append(text(R, 650, f'{fmt(D["contributions_12mo"])} contributions', 12.5, c["sub"],
+                  font=MONO, anchor="end"))
+
+    import datetime as dt
+    dates = {d: n for d, n in D["calendar"]}
+    first = dt.date.fromisoformat(min(dates))
+    start = first - dt.timedelta(days=(first.weekday() + 1) % 7)
+    scale = [c["empty"], "#E4BC7E" if mode == "light" else "#6B4A24",
+             c["mustard"], c["amber"], c["orange"], c["rust"]]
+
+    def bucket(n):
+        return 0 if n == 0 else 1 if n <= 1 else 2 if n <= 3 else 3 if n <= 6 else 4 if n <= 12 else 5
+
+    cols_n = (dt.date.fromisoformat(max(dates)) - start).days // 7 + 1
+    gap, top = 3.6, 674
+    cell = ((R - P) - (cols_n - 1) * gap) / cols_n
+    for date, n in dates.items():
+        d0 = dt.date.fromisoformat(date)
+        x = P + ((d0 - start).days // 7) * (cell + gap)
+        y = top + ((d0.weekday() + 1) % 7) * (cell + gap)
+        b.append(f'<rect x="{x:.1f}" y="{y:.1f}" width="{cell}" height="{cell}" rx="2.6" '
+                 f'fill="{scale[bucket(n)]}" stroke="{c["rule"]}" stroke-width="0.6" '
+                 f'stroke-opacity="0.5"/>')
+
+    # legend sits on the label row, right aligned
+    lx = R - 5 * 17 - 60
+    b.append(text(lx - 24, 650, "less", 11, c["sub"], font=MONO))
+    for i, col in enumerate(scale):
+        b.append(f'<rect x="{lx + i*17}" y="{640}" width="13" height="13" rx="2.6" fill="{col}" '
+                 f'stroke="{c["rule"]}" stroke-width="0.6" stroke-opacity="0.5"/>')
+    b.append(text(lx + 5 * 17 + 4, 650, "more", 11, c["sub"], font=MONO))
+    rule(812)
+
+    # ── languages ──────────────────────────────────────────────────────────
+    b.append(text(P, 850, "where the code is", 16, c["sub"], weight="bold", ls=2.4))
+    cols = [c["orange"], c["amber"], c["olive"], c["rust"], c["mustard"], c["sub"]]
+    for i, (name, share) in enumerate(languages()):
+        col, row = divmod(i, 3)
+        x = P + col * 476
+        y = 890 + row * 42
+        b.append(text(x, y, name, 14, c["ink"]))
+        b.append(f'<rect x="{x+120}" y="{y-9}" width="230" height="12" rx="6" fill="{c["shade"]}"/>')
+        b.append(f'<rect x="{x+120}" y="{y-9}" width="{max(5, 230*share):.1f}" height="12" '
+                 f'rx="6" fill="{cols[i % len(cols)]}"/>')
+        b.append(text(x + 366, y, f"{share*100:.1f}%", 13, c["sub"], font=MONO, anchor="end"))
+
+    return svg(W, H, "\n".join(b), "Kaleb Wright — GitHub data, contributions, languages")
+
+
 if __name__ == "__main__":
     for mode in ("light", "dark"):
-        for name, fn in (("header", header), ("data", data_card),
-                         ("activity", activity), ("langs", lang_card)):
-            (OUT / f"{name}-{mode}.svg").write_text(fn(mode))
+        (OUT / f"panel-{mode}.svg").write_text(panel(mode))
         print("rendered", mode)
     tag, n = stamp()
     print(f"cache tag {tag} on {n} refs")
