@@ -1,7 +1,7 @@
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/panel-dark.svg?v=907559c1">
-    <img src="assets/panel-light.svg?v=907559c1" width="100%" alt="Kaleb Wright — lines of code, commits by time of day, the year in commits, languages">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/panel-dark.svg?v=899f3534">
+    <img src="assets/panel-light.svg?v=899f3534" width="100%" alt="Kaleb Wright — lines of code, commits by time of day, the year in commits, languages">
   </picture>
 </p>
 
