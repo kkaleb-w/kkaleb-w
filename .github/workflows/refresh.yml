@@ -22,6 +22,12 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Font shaping
+        # Satoshi is outlined to paths at render time; fontTools reads it.
+        # The font itself is fetched from Fontshare at run time and never
+        # committed (ITF Free Font License forbids redistributing it).
+        run: python3 -m pip install --quiet fonttools
+
       - name: Measure
         # PROFILE_TOKEN needs `repo` scope: the collectors clone private repos
         # too, and the default GITHUB_TOKEN can only see this repository.

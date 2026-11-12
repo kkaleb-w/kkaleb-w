@@ -4,8 +4,9 @@
     python3 tools/build.py
 
 Reads data/build.json (written by tools/collect.py) and writes
-assets/*-{light,dark}.svg. Palette is autumn: cream paper, burnt orange,
-rust, olive, mustard. Nothing here is hard-coded data.
+assets/panel.svg. Palette is OLED: pure black paper with a grey-only ink ramp.
+All type is Satoshi, outlined to paths at render time (see tools/satoshi.py).
+Nothing here is hard-coded data.
 """
 
 import json
@@ -18,16 +19,22 @@ OUT = ROOT / "assets"
 OUT.mkdir(exist_ok=True)
 D = json.loads((ROOT / "data" / "build.json").read_text())
 
-SERIF = "'Iowan Old Style','Palatino Linotype',Palatino,Georgia,'Times New Roman',serif"
-MONO = "'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace"
+from satoshi import shape  # noqa: E402  (local module, same folder)
+
+# Kept so the call sites read the same; every string is Satoshi now, so the
+# arguments are accepted and ignored.
+SERIF = "Satoshi"
+MONO = "Satoshi"
 
 T = {
-    "light": dict(paper="#FBF1DC", card="#FFF9EC", ink="#3B2A1A", sub="#7C6A50",
-                  rule="#E4CFA9", orange="#C2551F", amber="#D98B2B", rust="#8C3B12",
-                  olive="#6E7B3F", mustard="#E3B23C", shade="#F0DFBD", empty="#F7EBD2"),
-    "dark": dict(paper="#181008", card="#221607", ink="#F4E5C8", sub="#BBA689",
-                 rule="#48381F", orange="#E4813F", amber="#EBA84C", rust="#C05F31",
-                 olive="#9BA96B", mustard="#EFC65F", shade="#2C1D0E", empty="#1B1106"),
+    # OLED: #000 paper, grey ink only. The two modes differ in tone direction,
+    # not in hue — there is no colour anywhere in the panel.
+    "light": dict(paper="#FFFFFF", card="#FFFFFF", ink="#0A0A0A", sub="#6B6B6B",
+                  rule="#E4E4E4", orange="#111111", amber="#3D3D3D", rust="#1F1F1F",
+                  olive="#555555", mustard="#8A8A8A", shade="#EFEFEF", empty="#F4F4F4"),
+    "dark": dict(paper="#000000", card="#000000", ink="#F2F2F2", sub="#8C8C8C",
+                 rule="#1F1F1F", orange="#FFFFFF", amber="#CFCFCF", rust="#8F8F8F",
+                 olive="#6A6A6A", mustard="#4A4A4A", shade="#141414", empty="#0B0B0B"),
 }
 
 LEAF = ("M0,-11 C1.5,-8.2 2.2,-7.2 3.2,-6.6 C4.6,-9 6,-9.4 7,-8.4 "
@@ -84,10 +91,15 @@ def svg(w, h, body, label):
 
 def text(x, y, s, size, fill, font=SERIF, weight="normal", anchor="start",
          ls=0, opacity=1, style=""):
-    s = (s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
-    return (f'<text x="{x}" y="{y}" font-family="{font}" font-size="{size}" fill="{fill}" '
-            f'font-weight="{weight}" text-anchor="{anchor}" letter-spacing="{ls}" '
-            f'opacity="{opacity}"{(" " + style) if style else ""}>{s}</text>')
+    """Satoshi, outlined. No <text> element ever reaches the SVG, so the panel
+    renders identically everywhere and no font file has to ship with the repo."""
+    d, w = shape(s, size, weight=weight, italic="italic" in style, tracking=ls)
+    if anchor == "middle":
+        x -= w / 2
+    elif anchor == "end":
+        x -= w
+    return (f'<g transform="translate({x:.2f} {y:.2f})" fill="{fill}" '
+            f'opacity="{opacity}">{d}</g>')
 
 
 def fmt(n):
@@ -261,7 +273,7 @@ def activity(mode):
     b.append(text(W - P, 47, f'{fmt(D["contributions_12mo"])} contributions', 13, c["sub"],
                   font=MONO, anchor="end"))
 
-    scale = [c["empty"], "#E4BC7E" if mode == "light" else "#6B4A24",
+    scale = [c["empty"], "#D6D6D6" if mode == "light" else "#3A3A3A",
              c["mustard"], c["amber"], c["orange"], c["rust"]]
 
     def bucket(n):
@@ -454,7 +466,7 @@ def panel(mode):
     dates = {d: n for d, n in D["calendar"]}
     first = dt.date.fromisoformat(min(dates))
     start = first - dt.timedelta(days=(first.weekday() + 1) % 7)
-    scale = [c["empty"], "#E4BC7E" if mode == "light" else "#6B4A24",
+    scale = [c["empty"], "#D6D6D6" if mode == "light" else "#3A3A3A",
              c["mustard"], c["amber"], c["orange"], c["rust"]]
 
     def bucket(n):
@@ -499,9 +511,10 @@ def panel(mode):
 
 
 if __name__ == "__main__":
-    for mode in ("light", "dark"):
-        (OUT / f"panel-{mode}.svg").write_text(panel(mode))
-        print("rendered", mode)
+    # One panel: the OLED one. The light variant existed only for the
+    # <picture> switch, and there is nothing to switch to now.
+    (OUT / "panel.svg").write_text(panel("dark"))
+    print("rendered panel.svg")
     tag, n = stamp()
     print(f"cache tag {tag} on {n} refs")
     print("loc", D["loc"], "files", D["loc_files"], "langs", languages()[:3])
