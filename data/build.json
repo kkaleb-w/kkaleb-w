@@ -1,19 +1,19 @@
 {
  "login": "kkaleb-w",
- "repos_public": 7,
+ "repos_public": 6,
  "repos_total": 12,
- "private": 5,
+ "private": 6,
  "stars": 2,
  "followers": 0,
- "storage_kb": 276423,
- "loc": 59815,
- "loc_files": 328,
+ "storage_kb": 276472,
+ "loc": 59654,
+ "loc_files": 329,
  "loc_per_repo": {
   "BoredLLM": 0,
   "boredllm-runtime": 2867,
   "brain-dump": 0,
   "journalism": 5518,
-  "kkaleb-w": 699,
+  "kkaleb-w": 538,
   "knightwire": 21527,
   "Lunar-Games": 0,
   "medium": 465,
@@ -23,11 +23,11 @@
   "Rosaria": 19601
  },
  "loc_failed": {},
- "commits": 155,
- "prs": 0,
+ "commits": 115,
+ "prs": 2,
  "issues": 0,
- "contributions_year": 321,
- "contributions_12mo": 321,
+ "contributions_year": 329,
+ "contributions_12mo": 329,
  "longest_streak": 14,
  "hours": [
   28,
@@ -35,21 +35,21 @@
   5,
   12,
   9,
-  2,
+  5,
   4,
   8,
   1,
   11,
   7,
   3,
-  2,
+  3,
   11,
   10,
   9,
   22,
   24,
   38,
-  25,
+  26,
   23,
   35,
   67,
@@ -59,12 +59,12 @@
   50,
   45,
   89,
-  62,
-  40,
+  64,
+  43,
   79,
   35
  ],
- "commit_total": 400,
+ "commit_total": 405,
  "since": "2020",
  "calendar": [
   [
@@ -1537,7 +1537,11 @@
   ],
   [
    "2026-11-11",
-   0
+   5
+  ],
+  [
+   "2026-11-12",
+   3
   ]
  ]
 }
